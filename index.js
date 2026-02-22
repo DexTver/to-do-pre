@@ -11,10 +11,6 @@ const listElement = document.querySelector(".to-do__list");
 const formElement = document.querySelector(".to-do__form");
 const inputElement = document.querySelector(".to-do__input");
 
-function loadTasks() {
-    return items;
-}
-
 function createItem(item) {
     const template = document.getElementById("to-do__item-template");
     const clone = template.content.querySelector(".to-do__item").cloneNode(true);
@@ -28,16 +24,28 @@ function createItem(item) {
 }
 
 function getTasksFromDOM() {
-
+    const itemsNamesElements = document.querySelectorAll(".to-do__item-text");
+    let tasks = [];
+    itemsNamesElements.forEach(item => tasks.push(item.textContent));
+    return tasks;
 }
 
 function saveTasks(tasks) {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
 
+function loadTasks() {
+    if (localStorage.getItem("tasks")) {
+        return JSON.parse(localStorage.getItem("tasks"));
+    }
+    return items;
 }
 
 formElement.addEventListener("submit", (e) => {
     e.preventDefault();
     listElement.prepend(createItem(inputElement.value));
+    items = getTasksFromDOM();
+    saveTasks(items);
     formElement.reset();
 })
 
