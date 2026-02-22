@@ -27,9 +27,7 @@ function createItem(item) {
     })
 
     duplicateButton.addEventListener("click", () => {
-        const itemName = textElement.textContent;
-        const newItem = createItem(itemName);
-        listElement.prepend(newItem);
+        listElement.prepend(createItem(textElement.textContent));
         saveTasks(getTasksFromDOM());
     })
 
@@ -47,10 +45,7 @@ function createItem(item) {
 }
 
 function getTasksFromDOM() {
-    const itemsNamesElements = document.querySelectorAll(".to-do__item-text");
-    let tasks = [];
-    itemsNamesElements.forEach(item => tasks.push(item.textContent));
-    return tasks;
+    return Array.from(document.querySelectorAll(".to-do__item-text"), item => item.textContent);
 }
 
 function saveTasks(tasks) {
@@ -58,10 +53,7 @@ function saveTasks(tasks) {
 }
 
 function loadTasks() {
-    if (localStorage.getItem("tasks")) {
-        return JSON.parse(localStorage.getItem("tasks"));
-    }
-    return items;
+    return localStorage.getItem("tasks") ? JSON.parse(localStorage.getItem("tasks")) : items;
 }
 
 formElement.addEventListener("submit", (e) => {
