@@ -20,6 +20,19 @@ function createItem(item) {
     const editButton = clone.querySelector(".to-do__item-button_type_edit");
 
     textElement.textContent = item;
+
+    deleteButton.addEventListener("click", (e) => {
+        clone.remove();
+        saveTasks(getTasksFromDOM());
+    })
+
+    duplicateButton.addEventListener("click", (e) => {
+        const itemName = textElement.textContent;
+        const newItem = createItem(itemName);
+        listElement.prepend(newItem);
+        saveTasks(getTasksFromDOM());
+    })
+
     return clone;
 }
 
