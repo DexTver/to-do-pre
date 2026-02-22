@@ -21,15 +21,25 @@ function createItem(item) {
 
     textElement.textContent = item;
 
-    deleteButton.addEventListener("click", (e) => {
+    deleteButton.addEventListener("click", () => {
         clone.remove();
         saveTasks(getTasksFromDOM());
     })
 
-    duplicateButton.addEventListener("click", (e) => {
+    duplicateButton.addEventListener("click", () => {
         const itemName = textElement.textContent;
         const newItem = createItem(itemName);
         listElement.prepend(newItem);
+        saveTasks(getTasksFromDOM());
+    })
+
+    editButton.addEventListener("click", () => {
+        textElement.contentEditable = "true";
+        textElement.focus();
+    })
+
+    textElement.addEventListener("blur", () => {
+        textElement.contentEditable = "false";
         saveTasks(getTasksFromDOM());
     })
 
@@ -57,8 +67,7 @@ function loadTasks() {
 formElement.addEventListener("submit", (e) => {
     e.preventDefault();
     listElement.prepend(createItem(inputElement.value));
-    items = getTasksFromDOM();
-    saveTasks(items);
+    saveTasks(getTasksFromDOM());
     formElement.reset();
 })
 
