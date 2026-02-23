@@ -11,7 +11,7 @@ const listElement = document.querySelector(".to-do__list");
 const formElement = document.querySelector(".to-do__form");
 const inputElement = document.querySelector(".to-do__input");
 
-function createItem(item) {
+const createItem = (item) => {
     const template = document.getElementById("to-do__item-template");
     const clone = template.content.querySelector(".to-do__item").cloneNode(true);
     const textElement = clone.querySelector(".to-do__item-text");
@@ -44,23 +44,19 @@ function createItem(item) {
     return clone;
 }
 
-function getTasksFromDOM() {
-    return Array.from(document.querySelectorAll(".to-do__item-text"), item => item.textContent);
-}
+const getTasksFromDOM = () => Array.from(document.querySelectorAll(".to-do__item-text"), item => item.textContent);
 
-function saveTasks(tasks) {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-}
+const saveTasks = (tasks) => localStorage.setItem("tasks", JSON.stringify(tasks));
 
-function loadTasks() {
-    return localStorage.getItem("tasks") ? JSON.parse(localStorage.getItem("tasks")) : items;
-}
+const loadTasks = () => localStorage.getItem("tasks") ? JSON.parse(localStorage.getItem("tasks")) : items;
 
 formElement.addEventListener("submit", (e) => {
     e.preventDefault();
-    listElement.prepend(createItem(inputElement.value));
-    saveTasks(getTasksFromDOM());
-    formElement.reset();
+    if (inputElement.value) {
+        listElement.prepend(createItem(inputElement.value));
+        saveTasks(getTasksFromDOM());
+        formElement.reset();
+    }
 })
 
 items = loadTasks();
